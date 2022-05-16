@@ -20,15 +20,15 @@ public class JdbcUserRepository {
     private final JdbcTemplate jdbcTemplate;
 
     // 매퍼 생성
-    static RowMapper<UserDto> mapper = (rs, rowNum) ->  // (ResultSet rs, int rowNum)
-            new UserDto.UserDtoBuilder()
+    /*static RowMapper<UserResponseDto> mapper = (rs, rowNum) ->  // (ResultSet rs, int rowNum)
+            UserResponseDto.builder()
                     .email(rs.getString("email"))
                     .name(rs.getString("name"))
                     .build();
 
 
-    public UserDto findByEmail(String email) {
-        List<UserDto> results = jdbcTemplate.query(
+    public UserResponseDto findByEmail(String email) {
+        List<UserResponseDto> results = jdbcTemplate.query(
                 "SELECT * FROM User WHERE email = ?",
                 mapper,
                 email
@@ -36,10 +36,10 @@ public class JdbcUserRepository {
         return results.isEmpty() ? null : results.get(0);
     }
 
-    public List<UserDto> findAll() {
+    public List<UserResponseDto> findAll() {
         return jdbcTemplate.query(
                 "SELECT * FROM User", mapper);
-    }
+    }*/
 
     public int join(UserRequestDto request) {
         return jdbcTemplate.update(new PreparedStatementCreator() {

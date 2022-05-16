@@ -34,23 +34,23 @@ public class UserApiControllerTest {
     @Test
     @DisplayName("회원가입")
     public void join() throws Exception {
-        /*UserRequestDto requestDto = UserRequestDto.builder()
+        UserRequestDto requestDto = UserRequestDto.builder()
                 .email("test@test.com")
                 .password("test")
                 .name("테스트")
-                .build();*/
+                .build();
 
-        String requestDto =
+        /*String requestDto =
                 "{" +
                         "\"email\": \"test@test.com\", " +
                         "\"password\": \"test\", " +
                         "\"name\": \"테스트\"" +
-                "}";
+                "}";*/
 
         mvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                //.content(objectMapper.writeValueAsString(requestDto)))
-                .content(requestDto))
+                .content(objectMapper.writeValueAsString(requestDto)))
+                //.content(requestDto))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

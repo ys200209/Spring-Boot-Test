@@ -5,16 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter // 게터 생성
-@NoArgsConstructor // 기본 생성자
-public class UserDto {
+public class UserResponseDto {
 
+    private Long seq;
     private String email;
     private String name;
 
-    @Builder
-    public UserDto(String email, String name) {
-        this.email = email;
-        this.name = name;
+    public UserResponseDto(User user) {
+        this.seq = user.getSeq();
+        this.email = user.getEmail();
+        this.name = user.getName();
     }
 
 }

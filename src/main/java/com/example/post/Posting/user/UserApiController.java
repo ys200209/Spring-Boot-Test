@@ -13,18 +13,18 @@ public class UserApiController {
     private final UserService userService; // 의존 주입
 
     @PostMapping // 회원가입
-    public int join(@RequestBody UserRequestDto request) {
+    public Long save(@RequestBody UserRequestDto request) {
         // @RequestBody : Json 형식의 문자열을 해당 자바 객체(UserRequestDto)로 변환한다.
-        int result = userService.join(request);
-        return result;
+        return userService.save(request);
     }
-    @GetMapping("/{email}") // 특정 회원 조회
-    public UserDto findById(@PathVariable("email") String email) {
-        return userService.findByEmail(email);
+
+    @GetMapping("/{seq}") // 특정 회원 조회
+    public UserResponseDto findById(@PathVariable("seq") Long seq) {
+        return userService.findByEmail(seq);
     }
 
     @GetMapping // 모든 회원 조회
-    public List<UserDto> findAll() {
+    public List<UserResponseDto> findAll() {
         return userService.findAll();
     }
 
