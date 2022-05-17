@@ -15,6 +15,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /*
@@ -49,6 +50,7 @@ public class UserApiControllerTest {
 
         mvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
+                        // .accept(MediaType.APPLICATION_JSON) // contentType과 머가 다르냐
                 .content(objectMapper.writeValueAsString(requestDto)))
                 //.content(requestDto))
                 .andExpect(status().isOk())
@@ -62,7 +64,10 @@ public class UserApiControllerTest {
 
         mvc.perform(get("/users/" + testEmail))
                 .andExpect(status().isOk())
+                // .andExpect(jsonPath(".name").value("Lee"))
                 .andDo(print());
+
+        // .andExpect(jsonPath("$.name").value("Lee"));
     }
 
     @Test
