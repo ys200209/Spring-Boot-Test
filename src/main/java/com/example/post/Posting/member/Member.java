@@ -13,22 +13,19 @@ import javax.persistence.*;
 public class Member {
 
     @Id
-    Long seq; // PK
+    Long seq; // 멤버 PK
+    int age; // 멤버 나이
+    String name; // 멤버 이름
+    Long team_id;
 
-    @Column(nullable = false)
-    String name; // 이름
-
-    @Column(nullable = false)
-    int age; // 나이
-
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "team")
-    Team team; // 자기가 속한 팀
-
+    Team team; // 멤버가 소속된 Team 테이블의 키
+*/
     @Builder
-    public Member(String name, int age, Team team) {
+    public Member(String name, int age, Long team_id) {
         this.name = name;
         this.age = age;
-        this.team = team;
+        this.team_id = team_id;
     }
 }
