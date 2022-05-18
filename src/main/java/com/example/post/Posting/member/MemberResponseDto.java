@@ -1,5 +1,6 @@
 package com.example.post.Posting.member;
 
+import com.example.post.Posting.team.Team;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,12 +11,12 @@ public class MemberResponseDto {
 
     int age; // 멤버 나이
     String name; // 멤버 이름
-    Long team_id;
+    //Team team;
 
     public MemberResponseDto(Member member) {
         this.age = member.age;
         this.name = member.name;
-        this.team_id = member.team_id;
+        //this.team = member.team;
     }
 
 }

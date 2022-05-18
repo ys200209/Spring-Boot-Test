@@ -12,6 +12,8 @@ public class MemberApiController {
 
     @PostMapping()
     public Long save(@RequestBody MemberRequestDto requestDto) {
+        System.out.println("requestDto : " + requestDto);
+        System.out.println("team : " + requestDto.team);
         return memberService.save(requestDto);
     }
 

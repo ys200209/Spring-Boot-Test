@@ -1,5 +1,6 @@
 package com.example.post.Posting.member;
 
+import com.example.post.Posting.team.Team;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,20 +11,20 @@ public class MemberRequestDto {
 
     int age; // 멤버 나이
     String name; // 멤버 이름
-    Long team_id;
+    Team team;
 
     @Builder
-    public MemberRequestDto(int age, String name, Long team_id) {
+    public MemberRequestDto(int age, String name, Team team) {
         this.age = age;
         this.name = name;
-        this.team_id = team_id;
+        this.team = team;
     }
 
     public Member toEntity() {
         return Member.builder()
                 .age(age)
                 .name(name)
-                .team_id(team_id)
+                //.team(team)
                 .build();
     }
 
