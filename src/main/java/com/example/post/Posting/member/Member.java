@@ -25,7 +25,7 @@ public class Member {
 
     /*@ManyToOne
     @JoinColumn(name = "team")
-    Team team; // 멤버가 소속된 Team 테이블의 키
+    Team team; // 멤버가 소속된 Team 테이블의 키 // 어떻게 이것이 가능한 것인지 ORM
 
     @Builder
     public Member(String name, int age, Team team) {
