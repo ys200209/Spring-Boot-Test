@@ -24,7 +24,7 @@ public class MemberRequestDto {
         return Member.builder()
                 .age(age)
                 .name(name)
-                //.team(team)
+                .team(team)
                 .build();
     }
 
