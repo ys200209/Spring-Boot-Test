@@ -1,7 +1,10 @@
 package com.example.post.Posting.team;
 
+import com.example.post.Posting.member.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,8 +18,8 @@ public class TeamApiController {
         return teamService.save(requestDto);
     }
 
-    @GetMapping("{seq}")
-    public TeamResponseDto findById(@PathVariable("seq") Long seq) {
+    @GetMapping("/{seq}")
+    public List<TeamResponseDto> findMembers(@PathVariable("seq") Long seq) {
         return teamService.findById(seq);
     }
 

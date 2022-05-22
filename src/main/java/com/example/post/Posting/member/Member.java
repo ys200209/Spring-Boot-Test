@@ -18,9 +18,9 @@ public class Member {
     int age; // 멤버 나이
     String name; // 멤버 이름
 
-    @ManyToOne(cascade = CascadeType.ALL) // save 시에만 : cascade = CascadeType.PERSIST
+    @ManyToOne// (cascade = CascadeType.PERSIST) // save 시에만 : cascade = CascadeType.PERSIST
     // Exception :: object references an unsaved transient instance - save the transient instance before flushing
-    // @JoinColumn(name = "team") // 유무 차이 : 단방향 관계 매핑일 때는 있으나 없으나 관계 ERD가 동일함. 양방향 매핑관계에서 참조 테이블측에서 현재 테이블에 접근하기 위해 정의하는 것??
+    @JoinColumn(name = "team") // 유무 차이 : 단방향 관계 매핑일 때는 있으나 없으나 관계 ERD가 동일함. 양방향 매핑관계에서 참조 테이블측에서 현재 테이블에 접근하기 위해 정의하는 것??
     Team team; // 멤버가 소속된 Team 테이블의 키 // 어떻게 이것이 가능한 것인지 ORM
 
     @Builder
@@ -30,16 +30,11 @@ public class Member {
         this.team = team;
     }/**/
 
-    /* @Builder
-    public Member(String name, int age) {
-        this.name = name;
-        this.age = age;
-    } */
-
-    /*
-    public void update(int age, String name) { // findById() : Entity -> Entity.update(age, name);
-        this.age = age;
-        this.name = name;
+    public void update(MemberRequestDto requestDto) {
+        this.age = requestDto.age;
+        this.name = requestDto.name;
+        this.team = requestDto.team;
     }
-    */
+
+    // @Lob Annotation
 }

@@ -21,8 +21,8 @@ public class Team {
     @Column(nullable = false)
     String name; // 팀명
 
-    // @OneToMany(mappedBy = "~")
-    // List<Member> members = new ArrayList<>(); // 팀에 소속된 Member들 (NPE를 방지하기 위해 미리 객체 초기화)
+    @OneToMany(mappedBy = "team")
+    List<Member> members = new ArrayList<>(); // 팀에 소속된 Member들 (NPE를 방지하기 위해 미리 객체 초기화)
     // 일대다(OneToMany) 관계 매핑에서 단방향만 존재할 시(Member 테이블에서는 Team 필드 자체가 없을 때)
     // Member, Team 테이블 말고도 team_members 라는 테이블이 생성되며
     // 이 테이블은 members List 필드의 각 인덱스를 PK로 가지고 team.seq를 FK로 가지는 리스트용 테이블이 따로 생성됨.
@@ -38,4 +38,7 @@ public class Team {
     public Team(String name) {
         this.name = name;
     }
+    
+    // public void addMember() ?
+
 }

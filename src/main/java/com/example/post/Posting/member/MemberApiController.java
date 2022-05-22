@@ -14,8 +14,6 @@ public class MemberApiController {
 
     @PostMapping
     public Long save(@RequestBody MemberRequestDto requestDto) {
-        System.out.println("requestDto : " + requestDto);
-        System.out.println("team : " + requestDto.team);
         return memberService.save(requestDto);
     }
 
@@ -29,5 +27,14 @@ public class MemberApiController {
         return memberService.findAll();
     }
 
+    @PutMapping("/{seq}")
+    public Long update(@PathVariable("seq") Long seq, @RequestBody MemberRequestDto requestDto) {
+        return memberService.update(seq, requestDto);
+    }
+
+    @DeleteMapping("/{seq}")
+    public void delete(@PathVariable("seq") Long seq) {
+        memberService.delete(seq);
+    }
 
 }
