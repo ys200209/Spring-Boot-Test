@@ -11,12 +11,12 @@ public class MemberResponseDto {
 
     int age; // 멤버 나이
     String name; // 멤버 이름
-    Team team;
+    String team_name;
 
     public MemberResponseDto(Member member) {
         this.age = member.age;
         this.name = member.name;
-        this.team = member.team;
+        this.team_name = member.team.getName();
     }
 
 }

@@ -22,8 +22,6 @@ public class MemberService {
         Member member = memberRepository.findById(seq)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
-        // System.out.println("조회한 멤버의 팀 : " + member.team.getName());
-
         return new MemberResponseDto(member);
     }
 

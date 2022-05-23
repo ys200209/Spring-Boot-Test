@@ -26,6 +26,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // JPA 의존성
+	// implementation 'com.jayway.jsonpath:json-path:2.4.0' // 테스트 코드 jsonPath 의존성
 }
 
 tasks.named('test') {
