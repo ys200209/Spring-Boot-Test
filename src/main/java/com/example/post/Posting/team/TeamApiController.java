@@ -22,6 +22,4 @@ public class TeamApiController {
     public List<TeamResponseDto> findMembers(@PathVariable("seq") Long seq) {
         return teamService.findById(seq);
     }
-
-
 }

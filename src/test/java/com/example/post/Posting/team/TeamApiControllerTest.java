@@ -2,6 +2,8 @@ package com.example.post.Posting.team;
 
 import com.example.post.Posting.member.Member;
 import com.example.post.Posting.member.MemberRepository;
+import com.example.post.Posting.member.MemberRequestDto;
+import com.example.post.Posting.member.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,55 +37,43 @@ public class TeamApiControllerTest {
     MemberRepository memberRepository;
 
     @Autowired
+    MemberService memberService;
+
+    @Autowired
     TeamRepository teamRepository;
 
     @Test
-    @DisplayName("mappedBy 옵션을 주지 않고 members 리스트에 멤버 담아서 저장해보기")
+    @DisplayName("엔티티 수정 시 mappedBy 옵션 차이")
+    // mappedBy 속성이 없을 때 : 팀을 두 개 만들어두고 team1에서 team2로 변경할 때
+    // member.setTeam("team2")로 하든, members.get(~).setTeam("team2")로 하든 똑같다. 라고 함.
     public void save() throws Exception {
-        Team team = Team.builder()
-                .name("테스트 팀2")
-                .build();
+        Team team1 = Team.builder().name("테스트 팀1").build();
+        Team team2 = Team.builder().name("테스트 팀2").build();
 
-        /*mvc.perform(post("/team")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(team)))
-                .andExpect(status().isOk())
-                .andDo(print());*/
-
-        teamRepository.save(team);
+        teamRepository.save(team1);
+        teamRepository.save(team2);
 
         Member member = Member.builder()
                 .age(30)
-                .name("김향기")
-                .team(team)
+                .name("홍길동")
+                .team(team1)
                 .build();
-
-        /*mvc.perform(post("/member")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(member)));*/
 
         memberRepository.save(member);
         // repository로 저장하면 엔티티의 seq가 생기지만
         // MockMvc로 POST 요청을 전송하면 seq가 안생김.
 
-        ResultActions result = mvc.perform(get("/member/" + member.getSeq()));
+        mvc.perform(get("/member/" + member.getSeq()))
+                .andExpect(jsonPath("$.team_name").value("테스트 팀1"));
 
-        result
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("김향기"))
-                .andExpect(jsonPath("$.age").value("30"));
+        memberService.update(member.getSeq(), MemberRequestDto.builder()
+                .age(30)
+                .name("홍길동")
+                .team(team2)
+                .build());
 
-        Member member2 = Member.builder()
-                .age(50)
-                .name("김향기2")
-                .team(team)
-                .build();
-
-        team.addMember(member2);
-
-        System.out.println("team Size : " + team.members.size());
-
+        mvc.perform(get("/member/" + member.getSeq()))
+                .andExpect(jsonPath("$.team_name").value("테스트 팀2"));
     }
 
 }

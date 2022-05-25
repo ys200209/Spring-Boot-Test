@@ -13,6 +13,7 @@ public class MemberResponseDto {
     String name; // 멤버 이름
     String team_name;
 
+
     public MemberResponseDto(Member member) {
         this.age = member.age;
         this.name = member.name;

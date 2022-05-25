@@ -21,7 +21,7 @@ public class Team {
     @Column(nullable = false)
     String name; // 팀명
 
-    @OneToMany//(mappedBy = "team") // mappedBy 속성을 주지 않고 어노테이션만 적었더니 team_members 라는 조인 테이블이 추가로 생성됨
+    @OneToMany(mappedBy = "team") // mappedBy 속성을 주지 않고 어노테이션만 적었더니 team_members 라는 조인 테이블이 추가로 생성됨
     List<Member> members = new ArrayList<>(); // 팀에 소속된 Member들 (NPE를 방지하기 위해 미리 객체 초기화)
     // 일대다(OneToMany) 관계 매핑에서 단방향만 존재할 시(Member 테이블에서는 Team 필드 자체가 없을 때)
     // Member, Team 테이블 말고도 team_members 라는 테이블이 생성되며
