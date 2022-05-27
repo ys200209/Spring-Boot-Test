@@ -64,12 +64,13 @@ public class MemberApiControllerTest {
     public void 조회하기() throws Exception {
 
         // 멤버 조회
-        mvc.perform(get("/member/1"))
+        mvc.perform(get("/member/1")) // GET : "/member/1" 요청을 보냄 (멤버 조회)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.age").value(20))
                 .andExpect(jsonPath("$.name").value("홍길동"))
                 .andExpect(jsonPath("$.team_name").value("테스트 팀1"));
+
     }
 
     @Test
@@ -86,14 +87,14 @@ public class MemberApiControllerTest {
                 .build();
 
         // Update 요청
-        mvc.perform(put("/member/1")
+        mvc.perform(put("/member/1") // PUT : "/member/1" 요청을 보냄 (멤버 변경)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(member)))
                 .andDo(print())
                 .andExpect(status().isOk());
 
         // 변경 검증
-        mvc.perform(get("/member/1"))
+        mvc.perform(get("/member/1")) // GET : "/member/1" 요청을 보냄 (멤버 조회)
                 .andExpect(jsonPath("$.age").value(30))
                 .andExpect(jsonPath("$.name").value("홍길동"))
                 .andExpect(jsonPath("$.team_name").value("테스트 팀2"));
@@ -104,7 +105,7 @@ public class MemberApiControllerTest {
     @DisplayName("멤버 삭제하기")
     public void 삭제하기() throws Exception {
 
-        mvc.perform(delete("/member/1"))
+        mvc.perform(delete("/member/1")) // DELETE : "/member/1" 요청을 보냄 (멤버 삭제)
                 .andDo(print())
                 .andExpect(status().isOk());
 
