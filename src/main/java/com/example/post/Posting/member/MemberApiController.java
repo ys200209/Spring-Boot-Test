@@ -19,6 +19,7 @@ public class MemberApiController {
 
     @GetMapping("/{seq}")
     public MemberResponseDto findById(@PathVariable("seq") Long seq) {
+        System.out.println("\nmemberService의 hashCode ? : " + memberService + "\n");
         return memberService.findById(seq);
     }
 
