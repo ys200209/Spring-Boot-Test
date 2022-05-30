@@ -19,6 +19,8 @@ public class MemberApiController {
 
     @GetMapping("/{seq}")
     public MemberResponseDto findById(@PathVariable("seq") Long seq) {
+        // RestController는 클라이언트가 예상하는 HttpStatus()를 리턴해줄 수 없다.
+        // 때문에, ResponseEntity로 감싸서 .ok() 메서드를 날려주는 방식으로 status 코드를 날려줄 수 있음.
         System.out.println("\nmemberService의 hashCode ? : " + memberService + "\n");
         return memberService.findById(seq);
     }
