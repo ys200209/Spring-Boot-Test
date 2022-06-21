@@ -28,6 +28,13 @@ public class MemberApiControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+    /*
+    Gson 객체를 통해서도 Json -> Java Object 또는 Java Object -> Json으로 변환할 수 있다.
+    ex) mvc.perform(
+    ~~~
+    .content(new Gson().toJson(user))
+    )
+    */
 
     @Autowired
     private TeamRepository teamRepository;
