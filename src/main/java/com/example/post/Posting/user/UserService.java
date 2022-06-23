@@ -21,7 +21,7 @@ public class UserService {
         User user = userRepository.findById(seq)
                 .orElseThrow(() -> new IllegalArgumentException(seq + " 회원은 존재하지 않습니다."));
 
-        return  new UserResponseDto(user); // 엔티티를 UserResponseDto 형태로 변환하여 전달
+        return new UserResponseDto(user); // 엔티티를 UserResponseDto 형태로 변환하여 전달
     }
 
     public List<UserResponseDto> findAll() {

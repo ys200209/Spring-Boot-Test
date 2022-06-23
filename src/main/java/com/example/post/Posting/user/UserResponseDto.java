@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter // 게터 생성
+@NoArgsConstructor
 public class UserResponseDto {
 
     private Long seq;

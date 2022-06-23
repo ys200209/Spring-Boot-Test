@@ -3,15 +3,14 @@ package com.example.post.Posting.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.ResultActions;
+
+import javax.transaction.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -24,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 */
 @SpringBootTest // @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc // 컨트롤러뿐만 아니라 @Service, @Repository가 분은 객체들도 모두 메모리에 올린다 <-> @WebMvcTest : Controller만 올린다.
+@Transactional
 public class UserApiControllerTest {
 
     @Autowired
@@ -49,22 +49,33 @@ public class UserApiControllerTest {
                 "}";*/
 
         mvc.perform(post("/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                        // .accept(MediaType.APPLICATION_JSON) // contentType과 머가 다르냐
-                .content(objectMapper.writeValueAsString(requestDto)))
-                //.content(requestDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
                 .andDo(print());
+
     }
 
     @Test
     @DisplayName("특정 회원 조회")
     public void findById() throws Exception {
-        String testEmail = "test@test.com";
 
-        mvc.perform(get("/users/" + testEmail))
+        UserRequestDto requestDto = UserRequestDto.builder()
+                .email("test@test.com")
+                .password("test")
+                .name("테스트")
+                .build();
+
+        mvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestDto)));
+
+        String testEmail = "test@test.com";
+        Long seq = 1L;
+
+        mvc.perform(get("/users/" + seq))
                 .andExpect(status().isOk())
-                // .andExpect(jsonPath(".name").value("Lee"))
+                .andExpect(jsonPath("$.name").value(requestDto.getName()))
                 .andDo(print());
 
         // .andExpect(jsonPath("$.name").value("Lee"));
