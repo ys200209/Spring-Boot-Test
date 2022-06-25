@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Assertions;
 
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -53,14 +55,16 @@ class UserServiceTest {
                 .password("1234")
                 .name("홍길동")
                 .build();
-        when(userRepository.save(any())).thenReturn(request.toEntity());
+
+        String email = "email@naver.com";
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+        when(userRepository.save(any(User.class))).thenReturn(request.toEntity());
 
         // when
-        Long seq = userService.save(request);
+        Long result = userService.save(request);
 
         // then
-        // UserResponseDto response = userService.findByEmail("email@naver.com");
-        assertThat(seq).isEqualTo(request.toEntity().getSeq());
+        assertThat(result).isEqualTo(request.toEntity().getSeq());
     }
 
     @Test
@@ -97,20 +101,96 @@ class UserServiceTest {
     }
 
     @Test
-    void findByEmail() {
+    void 이메일로_회원_찾기() {
+        // given
+        UserRequestDto request = UserRequestDto.builder()
+                .email("email@naver.com")
+                .password("1234")
+                .name("홍길동")
+                .build();
+
+        String email = "email@naver.com";
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(request.toEntity()));
+        // 너무 어렵네.
+        // 위의 로직은 findByEmail 메서드에 파라미터로 email 문자열 값이 들어가면
+        // 이에 해당하는 객체인 request 엔티티가 반환되도록 구현하였음.
+        // 계속 findByEmail(any(String.class)) 로 넣기도 하고, 또 저장도 같이 시키려고 하니 문제가 발생하였는데,
+        // 자꾸 헷갈리는게 회원을 찾으려고 실제 DB에 넣을 필요가 없다는 것.. (이거 때문에 삽질 많이함)
+        // 그냥 원하는 문자열(이메일 값)이 들어가면 그거에 해당하는 반환값만 적어주고 그게 맞는지만 확인하면 되는데 왤케 헷갈리는지..
+        // 특정 회원을 얻기 위해서 값을 저장하고 조회할 필요가 전혀 없다. 그냥 조건만 담고 그 객체를 리턴해주면 되는 것.
+
+        // when
+        UserResponseDto response = userService.findByEmail(email);
+
+        // then
+        assertThat(response.getName()).isEqualTo(request.getName());
 
     }
 
     @Test
     void 존재하지_않는_회원조회() {
+        // given
+        String email = "존재하지 않는 이메일";
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        // when
+        Exception e = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            userService.findByEmail(email);
+        });
+
+        // then
+        assertThat(e.getMessage()).isEqualTo(email + " 회원은 존재하지 않습니다.");
 
     }
 
     @Test
     void findAll() {
+        // given
+        UserRequestDto request1 = UserRequestDto.builder().email("email1@naver.com")
+                .password("1234").name("홍길동").build();
+
+        UserRequestDto request2 = UserRequestDto.builder().email("email2@naver.com")
+                .password("5678").name("최길동").build();
+
+        UserRequestDto request3 = UserRequestDto.builder().email("email3@naver.com")
+                .password("9101112").name("박길동").build();
+
+        List<User> list = new ArrayList<>();
+        list.add(request1.toEntity());
+        list.add(request2.toEntity());
+        list.add(request3.toEntity());
+
+        when(userRepository.findAll()).thenReturn(list);
+
+        // when
+        List<UserResponseDto> result = userService.findAll();
+
+        // then
+        assertThat(result.size()).isEqualTo(list.size());
     }
 
     @Test
     void update() {
+        // given
+        UserRequestDto request1 = UserRequestDto.builder()
+                .email("email@naver.com")
+                .password("1234")
+                .name("홍길동")
+                .build();
+
+        UserRequestDto request2 = UserRequestDto.builder()
+                .email(request1.getEmail())
+                .password(request1.getPassword())
+                .name("최길동")
+                .build();
+
+        when(userRepository.save(any(User.class))).thenReturn(request2.toEntity());
+
+        // when
+        Long result = userService.update(request2);
+
+        // then
+        assertThat(result).isEqualTo(request2.toEntity().getSeq());
+
     }
 }
